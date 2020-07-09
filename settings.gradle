@@ -1,0 +1,3 @@
+include ':remotelogger'
+include ':app'
+rootProject.name = "Logger"
