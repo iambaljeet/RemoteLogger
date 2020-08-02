@@ -21,15 +21,18 @@ class FileUtility(application: Application?) {
         return logsDirectory
     }
 
-    private fun getFileName(): String {
-        val fileName = "${context?.packageName}_logs.txt"
+    private fun getFileName(logFileNamePrefix: String?): String {
+        val fileName = "${logFileNamePrefix}_${context?.packageName}_logs.txt"
         return fileName
     }
 
-    fun createFile(): File {
+    fun createFile(logFileNamePrefix: String?): File {
         val logsDirectory = getLogsDirectory()
-        val fileName = getFileName()
+        val fileName = getFileName(logFileNamePrefix)
         val logFile = File(logsDirectory, fileName)
+        if (!logFile.exists()) {
+            logFile.createNewFile()
+        }
 
         return logFile
     }

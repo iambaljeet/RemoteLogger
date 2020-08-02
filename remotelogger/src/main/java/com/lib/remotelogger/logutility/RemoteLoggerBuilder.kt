@@ -6,15 +6,17 @@ import com.lib.remotelogger.utility.RemoteLogger
 class RemoteLoggerBuilder {
     private var application: Application? = null
     private var uploadUrl: String? = null
-    private var isRemoteLoggingEnabled: Boolean = false
     private var uploadLogOnLaunch: Boolean = false
-    private var isCrashLogsEnabled: Boolean = false
+    private var uploadLogsTimeIntervalMinutes: Long = 1
+    private var logFileNamePrefix: String? = null
+    private var crashLogsEnabled: Boolean = false
 
     fun getApplication() = application
     fun getUploadUrl() = uploadUrl
-    fun getIsRemoteLoggingEnabled() = isRemoteLoggingEnabled
     fun getUploadLogOnLaunch() = uploadLogOnLaunch
-    fun getIsCrashLogsEnabled() = isCrashLogsEnabled
+    fun getUploadLogsTimeIntervalMinutes() = uploadLogsTimeIntervalMinutes
+    fun getLogFileNamePrefix() = logFileNamePrefix
+    fun getCrashLogsEnabled() = crashLogsEnabled
 
     fun setApplication(application: Application): RemoteLoggerBuilder {
         this.application = application
@@ -26,8 +28,8 @@ class RemoteLoggerBuilder {
         return this
     }
 
-    fun setIsRemoteLoggingEnabled(isRemoteLoggingEnabled: Boolean): RemoteLoggerBuilder {
-        this.isRemoteLoggingEnabled = isRemoteLoggingEnabled
+    fun setUploadLogsTimeIntervalMinutes(uploadLogsTimeIntervalMinutes: Long): RemoteLoggerBuilder {
+        this.uploadLogsTimeIntervalMinutes = uploadLogsTimeIntervalMinutes
         return this
     }
 
@@ -36,8 +38,13 @@ class RemoteLoggerBuilder {
         return this
     }
 
-    fun setIsCrashLogsEnabled(isCrashLogsEnabled: Boolean): RemoteLoggerBuilder {
-        this.isCrashLogsEnabled = isCrashLogsEnabled
+    fun setLogFileNamePrefix(logFileNamePrefix: String): RemoteLoggerBuilder {
+        this.logFileNamePrefix = logFileNamePrefix
+        return this
+    }
+
+    fun setCrashLogsEnabled(crashLogsEnabled: Boolean): RemoteLoggerBuilder {
+        this.crashLogsEnabled = crashLogsEnabled
         return this
     }
 
@@ -47,6 +54,9 @@ class RemoteLoggerBuilder {
     }
 
     private fun isValidateRemoteLogger(): Boolean {
-        return !uploadUrl.isNullOrBlank() && application != null
+        if (application == null) return false
+        else if (uploadLogOnLaunch && uploadUrl.isNullOrBlank()) return false
+        else if (uploadLogsTimeIntervalMinutes < 1) return false
+        return true
     }
 }

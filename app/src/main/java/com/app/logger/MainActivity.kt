@@ -25,11 +25,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 remoteLogger!!.toString()
             }
             R.id.button_log -> {
-                for (i in 0..50) {
-                    RemoteLogger.e(TAG = TAG, message = "Hello user $i")
-                }
                 val createFile = FileUtility(application = application)
-                    .createFile()
+                    .createFile("test")
 
                 Log.e(TAG, "LogFile: ${createFile.readText()}")
             }

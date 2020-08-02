@@ -2,6 +2,7 @@ package com.lib.remotelogger.utility
 
 import android.app.Application
 import android.util.Log
+import com.lib.remotelogger.crashutility.CrashReporterExceptionHandler
 import com.lib.remotelogger.fileutility.FileUtility
 import com.lib.remotelogger.logutility.LogFormatter
 import com.lib.remotelogger.logutility.RemoteLoggerBuilder
@@ -10,41 +11,39 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer
 
+
 class RemoteLogger(builder: RemoteLoggerBuilder) {
     private var application: Application? = builder.getApplication()
     private var uploadUrl: String? = builder.getUploadUrl()
-    private var isRemoteLoggingEnabled: Boolean = builder.getIsRemoteLoggingEnabled()
     private var uploadLogOnLaunch: Boolean = builder.getUploadLogOnLaunch()
-    private var isCrashReportingEnabled: Boolean = builder.getIsCrashLogsEnabled()
-
-    val exceptionHandler = Thread.setDefaultUncaughtExceptionHandler { thread, e ->
-        val result: Writer = StringWriter()
-        val printWriter = PrintWriter(result)
-        e.printStackTrace(printWriter)
-        val stacktrace: String = result.toString()
-
-        recordCrashLog(thread = thread, message = stacktrace)
-
-        printWriter.close()
-    }
+    private var uploadLogsTimeIntervalMinutes: Long = builder.getUploadLogsTimeIntervalMinutes()
+    private var logFileNamePrefix: String? = builder.getLogFileNamePrefix()
+    private var crashLogsEnabled: Boolean = builder.getCrashLogsEnabled()
 
     init {
-        logFile = FileUtility(application = application).createFile()
-        fileToWriteLog = FileUtility(application = application).createFile()
+        fileToWriteLog = FileUtility(application = application).createFile(logFileNamePrefix)
         logFormatter = LogFormatter(application = application)
+        if (crashLogsEnabled) {
+            setupCrashReporting()
+        }
     }
 
     companion object {
-        private var logFile: File? = null
         private var logFormatter: LogFormatter? = null
         private var fileToWriteLog: File? = null
 
+        private fun setupCrashReporting() {
+            val crashReporterExceptionHandler = CrashReporterExceptionHandler() { stackTrace ->
+                recordCrashLog(crashDetails = stackTrace)
+            }
+            Thread.setDefaultUncaughtExceptionHandler(crashReporterExceptionHandler)
+        }
+
         private fun recordCrashLog(
-            thread: Thread,
-            message: String
+            crashDetails: String
         ) {
             val formattedLog =
-                logFormatter?.formatCrashLog(thread = thread, message = message)
+                logFormatter?.formatCrashLog(message = crashDetails)
 
             formattedLog?.let { fileToWriteLog?.appendText(it) }
         }

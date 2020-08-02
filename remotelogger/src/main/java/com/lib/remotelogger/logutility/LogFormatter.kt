@@ -38,7 +38,6 @@ class LogFormatter(application: Application?) {
     }
 
     fun formatCrashLog(
-        thread: Thread,
         message: String
     ): String {
         val currentTimeMillis = System.currentTimeMillis()
@@ -47,10 +46,9 @@ class LogFormatter(application: Application?) {
         val timeStamp = currentDate.toDateString(toFormat = "yyyy-MM-dd hh:mm:ss")
         val appVersion = "${BuildConfig.VERSION_NAME}-${BuildConfig.VERSION_CODE}"
         val osVersion = "Android-" + Build.VERSION.RELEASE
-        val logClassNameMethodAndLineNumber = Logger.classNameMethodNameAndLineNumber
 
         val logFormattedText =
-            "$timeStamp | $appVersion : $osVersion | ${deviceUUID} | $logClassNameMethodAndLineNumber | $message\n"
+            "$timeStamp | $appVersion : $osVersion | ${deviceUUID} | $message\n"
         return logFormattedText
     }
 
