@@ -1,5 +1,3 @@
-![](https://github.com/iambaljeet/Covid19Tracker/blob/master/art/covid19Updates.png)
-
 # RemoteLogger
 ![GitHub Release Date](https://img.shields.io/github/release-date/iambaljeet/RemoteLogger)
 ![GitHub All Releases](https://img.shields.io/github/downloads/iambaljeet/RemoteLogger/total)
