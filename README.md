@@ -9,7 +9,12 @@
 ![Tweet](	https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fiambaljeet%2FRemoteLogger)
 ![Twitter Follow](https://img.shields.io/twitter/follow/yetanotherdev_?label=Follow&style=social)
 
-**RemoteLogger** is an Android library 📱 used to log anything/crashes in a file. 
+**RemoteLogger** is an Android library 📱 used to log anything/crashes in a file.
+
+This library aims to print all provided logs to a File(Stored in local storage) also it supports logging all crashes in the file in a well formatted way along with device, Android version etc. So one can easily debug apps remotely by sending the log file to server.
+- Ability to add prefix to the log file. 
+- Easy and simple methods to get started.
+- It supports logging of crashes too.
 
 # Usage
 1. Setting up library to your App
@@ -51,12 +56,6 @@ Also, you can pass a throwable to any of the Log as an optional parameter
 ```
         RemoteLogger.e(TAG, "This is a error log", throwable)
 ```
-
-## About
-. This library aims to print all provided logs to a File(Stored in local storage) also it supports logging all crashes in the file in a well formatted way along with device, Android version etc. So one can easily debug apps remotely by sending the log file to server.
-- Ability to add prefix to the log file. 
-- Easy and simple methods to get started.
-- It supports logging of crashes too.
 
 ## Built With 🛠
 - [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
