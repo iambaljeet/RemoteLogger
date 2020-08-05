@@ -2,21 +2,15 @@ package com.lib.remotelogger.utility
 
 import android.app.Application
 import android.util.Log
+import androidx.annotation.WorkerThread
 import com.lib.remotelogger.crashutility.CrashReporterExceptionHandler
 import com.lib.remotelogger.fileutility.FileUtility
 import com.lib.remotelogger.logutility.LogFormatter
 import com.lib.remotelogger.logutility.RemoteLoggerBuilder
 import java.io.File
-import java.io.PrintWriter
-import java.io.StringWriter
-import java.io.Writer
-
 
 class RemoteLogger(builder: RemoteLoggerBuilder) {
     private var application: Application? = builder.getApplication()
-    private var uploadUrl: String? = builder.getUploadUrl()
-    private var uploadLogOnLaunch: Boolean = builder.getUploadLogOnLaunch()
-    private var uploadLogsTimeIntervalMinutes: Long = builder.getUploadLogsTimeIntervalMinutes()
     private var logFileNamePrefix: String? = builder.getLogFileNamePrefix()
     private var crashLogsEnabled: Boolean = builder.getCrashLogsEnabled()
 
@@ -58,6 +52,17 @@ class RemoteLogger(builder: RemoteLoggerBuilder) {
                 logFormatter?.formatLog(tag = TAG, message = message, throwable = throwable, logLevel = logLevel)
 
             formattedLog?.let { fileToWriteLog?.appendText(it) }
+        }
+
+        @JvmStatic
+        fun getLogFile(): File? {
+            return fileToWriteLog
+        }
+
+        @JvmStatic
+        @WorkerThread
+        fun readLogs(): String? {
+            return fileToWriteLog?.readText()
         }
 
         @JvmStatic

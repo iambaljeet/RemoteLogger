@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.lib.remotelogger.fileutility.FileUtility
 import com.lib.remotelogger.utility.RemoteLogger
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity(), View.OnClickListener {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,10 +26,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 remoteLogger!!.toString()
             }
             R.id.button_log -> {
-                val createFile = FileUtility(application = application)
-                    .createFile("test")
-
-                Log.e(TAG, "LogFile: ${createFile.readText()}")
+                Log.e(TAG, "LogFile: ${RemoteLogger.readLogs()}")
             }
         }
     }
