@@ -12,7 +12,22 @@
 **RemoteLogger** is an Android library 📱 used to log anything/crashes in a file. 
 
 # Usage
-1. First setup RemoteLogger in your Application class
+1. Setting up library to your App
+
+Add below to your project level 'build.gradle' file.
+```
+        allprojects {
+            repositories {
+                maven { url 'https://jitpack.io' }
+            }
+        }
+```
+Add library to your app level 'build.gradle' file.
+```
+        implementation 'com.github.iambaljeet:RemoteLogger:1.0'
+```
+
+2. First setup RemoteLogger in your Application class
 ```
         RemoteLoggerBuilder()
             .setApplication(this)
@@ -24,7 +39,7 @@
 Logging crash: CrashLogging is optional and can be disabled by passing 'false' in 'setCrashLogsEnabled(false)' method.
 Adding prefix to file: There is an optional parameter to add prefix to Log file using 'setLogFileNamePrefix("prefix_)' method.
 
-2. Now simply Log anything you want using some generic methods available in RemoteLogger.
+3. Now simply Log anything you want using some generic methods available in RemoteLogger.
 ```
         RemoteLogger.e(TAG, "This is a error log")
         RemoteLogger.d(TAG, "This is a debug log")
