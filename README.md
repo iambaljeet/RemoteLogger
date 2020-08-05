@@ -11,6 +11,32 @@
 
 **RemoteLogger** is an Android library 📱 used to log anything/crashes in a file. 
 
+# Usage
+1. First setup RemoteLogger in your Application class
+```
+        RemoteLoggerBuilder()
+            .setApplication(this)
+            .setLogFileNamePrefix("userId_")
+            .setCrashLogsEnabled(true)
+            .build()
+```
+
+Logging crash: CrashLogging is optional and can be disabled by passing 'false' in 'setCrashLogsEnabled(false)' method.
+Adding prefix to file: There is an optional parameter to add prefix to Log file using 'setLogFileNamePrefix("prefix_)' method.
+
+2. Now simply Log anything you want using some generic methods available in RemoteLogger.
+```
+        RemoteLogger.e(TAG, "This is a error log")
+        RemoteLogger.d(TAG, "This is a debug log")
+        RemoteLogger.i(TAG, "This is a info log")
+        RemoteLogger.v(TAG, "This is a verbose log")
+```
+
+Also, you can pass a throwable to any of the Log as an optional parameter
+```
+        RemoteLogger.e(TAG, "This is a error log", throwable)
+```
+
 ## About
 . This library aims to print all provided logs to a File(Stored in local storage) also it supports logging all crashes in the file in a well formatted way along with device, Android version etc. So one can easily debug apps remotely by sending the log file to server.
 - Ability to add prefix to the log file. 
