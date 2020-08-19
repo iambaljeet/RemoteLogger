@@ -59,7 +59,7 @@ Also, you can pass a throwable to any of the Log as an optional parameter.
 
 To get the log file you can use below method.
 ```
-        File file = RemoteLogger.getLogFile();
+        val file: File? = RemoteLogger.getLogFile();
 ```
 
 ## Built With 🛠
