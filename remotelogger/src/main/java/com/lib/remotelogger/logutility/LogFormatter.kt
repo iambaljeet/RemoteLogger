@@ -1,6 +1,7 @@
 package com.lib.remotelogger.logutility
 
 import android.app.Application
+import android.content.pm.PackageInfo
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
@@ -10,8 +11,9 @@ import com.lib.remotelogger.utility.toDateString
 
 class LogFormatter(application: Application?) {
 
-    val deviceUUID =
-    Settings.Secure.getString(application?.contentResolver, Settings.Secure.ANDROID_ID)
+    val deviceUUID = Settings.Secure.getString(application?.contentResolver, Settings.Secure.ANDROID_ID)
+    val packageManager = application?.packageManager
+    val packageName: String? = application?.packageName
 
     fun formatLog(
         tag: String,
@@ -22,8 +24,14 @@ class LogFormatter(application: Application?) {
         val currentTimeMillis = System.currentTimeMillis()
         val currentDate = currentTimeMillis.toDate()
 
+        val packageInfo: PackageInfo? = packageManager?.getPackageInfo(packageName.toString(), 0)
+        val appVersion = if (packageInfo != null) {
+            "${packageInfo.versionName}-${packageInfo.versionCode}"
+        } else {
+            ""
+        }
+
         val timeStamp = currentDate.toDateString(toFormat = "yyyy-MM-dd hh:mm:ss")
-        val appVersion = "${BuildConfig.VERSION_NAME}-${BuildConfig.VERSION_CODE}"
         val osVersion = "Android-" + Build.VERSION.RELEASE
         val logLevelName = getLogLevelName(messageLogLevel = logLevel)
 
