@@ -62,6 +62,12 @@ To get the log file you can use below method.
         val file: File? = RemoteLogger.getLogFile();
 ```
 
+To read all logs stored in logging file use below method.
+```
+        val logs: String? = RemoteLogger.readLogs();
+```
+This will return a string will all logs from that file.
+
 ## Built With 🛠
 - [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture) - Collection of libraries that help you design robust, testable, and maintainable apps.

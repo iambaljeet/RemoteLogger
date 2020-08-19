@@ -10,8 +10,7 @@ class MyApp: Application() {
 
         RemoteLoggerBuilder()
             .setApplication(this)
-            .setLogFileNamePrefix("test")
-            .setCrashLogsEnabled(true)
+            .setCrashLogsEnabled(false)
             .build()
     }
 }

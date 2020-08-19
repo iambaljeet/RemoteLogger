@@ -22,7 +22,11 @@ class FileUtility(application: Application?) {
     }
 
     private fun getFileName(logFileNamePrefix: String?): String {
-        val fileName = "${logFileNamePrefix}_${context?.packageName}_logs.txt"
+        val fileName =if (!logFileNamePrefix.isNullOrBlank()) {
+            "${logFileNamePrefix}_${context?.packageName}_logs.txt"
+        } else {
+            "${context?.packageName}_logs.txt"
+        }
         return fileName
     }
 

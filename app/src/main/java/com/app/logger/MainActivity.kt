@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 remoteLogger!!.toString()
             }
             R.id.button_log -> {
-                Log.e(TAG, "LogFile: ${RemoteLogger.readLogs()}")
+                Log.d(TAG, "LogFile Path: ${RemoteLogger.getLogFile()?.absolutePath}")
+                Log.d(TAG, "LogFile Data: ${RemoteLogger.readLogs()}")
             }
         }
     }

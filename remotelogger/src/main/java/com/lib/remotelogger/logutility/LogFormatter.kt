@@ -1,19 +1,25 @@
 package com.lib.remotelogger.logutility
 
 import android.app.Application
+import android.content.Context
 import android.content.pm.PackageInfo
 import android.os.Build
-import android.provider.Settings
 import android.util.Log
-import com.lib.remotelogger.BuildConfig
 import com.lib.remotelogger.utility.toDate
 import com.lib.remotelogger.utility.toDateString
 
 class LogFormatter(application: Application?) {
 
-    val deviceUUID = Settings.Secure.getString(application?.contentResolver, Settings.Secure.ANDROID_ID)
-    val packageManager = application?.packageManager
-    val packageName: String? = application?.packageName
+    private var context: Context? = application?.applicationContext
+    private val packageManager = context?.packageManager
+    private val packageName: String? = context?.packageName
+    private val packageInfo: PackageInfo? = packageManager?.getPackageInfo(packageName.toString(), 0)
+    private val appVersion = if (packageInfo != null) {
+        "${packageInfo.versionName}-${packageInfo.versionCode}"
+    } else {
+        ""
+    }
+    private val osVersion = "Android-" + Build.VERSION.RELEASE
 
     fun formatLog(
         tag: String,
@@ -23,16 +29,8 @@ class LogFormatter(application: Application?) {
     ): String {
         val currentTimeMillis = System.currentTimeMillis()
         val currentDate = currentTimeMillis.toDate()
-
-        val packageInfo: PackageInfo? = packageManager?.getPackageInfo(packageName.toString(), 0)
-        val appVersion = if (packageInfo != null) {
-            "${packageInfo.versionName}-${packageInfo.versionCode}"
-        } else {
-            ""
-        }
-
         val timeStamp = currentDate.toDateString(toFormat = "yyyy-MM-dd hh:mm:ss")
-        val osVersion = "Android-" + Build.VERSION.RELEASE
+
         val logLevelName = getLogLevelName(messageLogLevel = logLevel)
 
         val finalMessage = if (throwable != null) {
@@ -41,7 +39,7 @@ class LogFormatter(application: Application?) {
             message
         }
         val logFormattedText =
-            "$timeStamp | $appVersion : $osVersion | ${deviceUUID} | [$logLevelName/$tag]: $finalMessage\n"
+            "$timeStamp | $appVersion : $osVersion | [$logLevelName/$tag]: $finalMessage\n"
         return logFormattedText
     }
 
@@ -50,13 +48,10 @@ class LogFormatter(application: Application?) {
     ): String {
         val currentTimeMillis = System.currentTimeMillis()
         val currentDate = currentTimeMillis.toDate()
-
         val timeStamp = currentDate.toDateString(toFormat = "yyyy-MM-dd hh:mm:ss")
-        val appVersion = "${BuildConfig.VERSION_NAME}-${BuildConfig.VERSION_CODE}"
-        val osVersion = "Android-" + Build.VERSION.RELEASE
 
         val logFormattedText =
-            "$timeStamp | $appVersion : $osVersion | ${deviceUUID} | $message\n"
+            "$timeStamp | $appVersion : $osVersion | $message\n"
         return logFormattedText
     }
 
