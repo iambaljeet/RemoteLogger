@@ -52,9 +52,14 @@ Adding prefix to file: There is an optional parameter to add prefix to Log file 
         RemoteLogger.v(TAG, "This is a verbose log")
 ```
 
-Also, you can pass a throwable to any of the Log as an optional parameter
+Also, you can pass a throwable to any of the Log as an optional parameter.
 ```
         RemoteLogger.e(TAG, "This is a error log", throwable)
+```
+
+To get the log file you can use below method.
+```
+        val file: File? = RemoteLogger.getLogFile();
 ```
 
 ## Built With 🛠
